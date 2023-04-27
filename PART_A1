@@ -1,0 +1,77 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import f1_score
+from sklearn.metrics import roc_auc_score
+from sklearn.metrics import precision_recall_curve
+from sklearn.metrics import roc_curve
+a_a=[1 for n in range(10)]+[0 for n in range(10)]
+p_a=[1 for n in range(9)]+[0,1,1]+[0 for n in range(8)]
+print(p_a)
+print(a_a)
+def my_confusion(a1,p1):
+    TP=len([a for a,p in zip(a1,p1) if a==p and p==1])
+    TN=len([a for a,p in zip(a1,p1) if a==p and p==0])
+    FP=len([a for a,p in zip(a1,p1) if a!=p and p==1])
+    FN=len([a for a,p in zip(a1,p1) if a!=p and p==0])
+    return "[[{} {}]\n[{} {}]]".format(TP,FN,FP,TN)
+print(my_confusion(a_a,p_a))
+print(confusion_matrix(a_a,p_a))
+def my_accuracy(a1,p1):
+    TP=len([a for a,p in zip(a1,p1) if a==p and p==1])
+    TN=len([a for a,p in zip(a1,p1) if a==p and p==0])
+    FP=len([a for a,p in zip(a1,p1) if a!=p and p==1])
+    FN=len([a for a,p in zip(a1,p1) if a!=p and p==0])
+    return (TP+TN)/(TP+TN+FP+FN)
+print(my_accuracy(a_a,p_a))
+print(accuracy_score(a_a,p_a))
+def my_recall(a1,p1):
+    TP=len([a for a,p in zip(a1,p1) if a==p and p==1])
+    TN=len([a for a,p in zip(a1,p1) if a==p and p==0])
+    FP=len([a for a,p in zip(a1,p1) if a!=p and p==1])
+    FN=len([a for a,p in zip(a1,p1) if a!=p and p==0])
+    return (TP)/(TP+FN)
+print(my_recall(a_a,p_a))
+print(recall_score(a_a,p_a))
+def my_precision(a1,p1):
+    TP=len([a for a,p in zip(a1,p1) if a==p and p==1])
+    TN=len([a for a,p in zip(a1,p1) if a==p and p==0])
+    FP=len([a for a,p in zip(a1,p1) if a!=p and p==1])
+    FN=len([a for a,p in zip(a1,p1) if a!=p and p==0])
+    return (TP)/(TP+FP)
+print(my_precision(a_a,p_a))
+print(precision_score(a_a,p_a))
+def my_fs(a1,p1):
+    return 2*(my_precision(a_a,p_a)*my_recall(a_a,p_a))/(my_precision(a_a,p_a)+my_recall(a_a,p_a))
+print(my_fs(a_a,p_a))
+print(f1_score(a_a,p_a))
+fpr,tpr,_=roc_curve(a_a,p_a)
+plt.plot(fpr,tpr)
+p,r,_=precision_recall_curve(a_a,p_a)
+plt.step(p,r)
+precision, recall, _ = precision_recall_curve(a_a, p_a)
+plt.step(recall, precision, color='g', alpha=0.2, where='post')
+plt.fill_between(recall, precision, alpha=0.2, color='g', step='post')
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+plt.ylim([0.0, 1.0])
+plt.xlim([0.0, 1.0])
+plt.title('Precision-Recall curve')
+plt.show()
+print("sklearn ROC AUC Score A:", roc_auc_score(a_a, p_a))
+fpr, tpr, _ = roc_curve(a_a, p_a)
+plt.figure()
+plt.plot(fpr, tpr, color='darkorange',
+         lw=2, label='ROC curve')
+plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--') #center line
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver operating characteristic example')
+plt.legend(loc="lower right")
+plt.show()
