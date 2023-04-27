@@ -1,0 +1,74 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+data=pd.read_csv("advertising1.csv")
+data.head()
+plt.scatter(data['TV'],data['Sales'])
+plt.xlabel('tv')
+plt.ylabel('sales')
+plt.show()
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error,r2_score,mean_absolute_error
+from sklearn.model_selection import train_test_split
+x=data['TV'].values.reshape(-1,1)
+y=data['Sales'].values.reshape(-1,1)
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.3)
+reg=LinearRegression()
+reg.fit(x_train,y_train)
+print("y={:.2}*x+{:.2}".format(reg.coef_[0][0],reg.intercept_[0]))
+predictions=reg.predict(x_test)
+plt.scatter(x_test,y_test,c="black")
+plt.plot(x_test,predictions,linewidth=2,c="red")
+plt.show()
+print(mean_absolute_error(y_test,predictions))
+mse=mean_squared_error(y_test,predictions)
+print(np.sqrt(mse))
+
+
+plt.scatter(data['Radio'],data['Sales'])
+plt.xlabel('Radio')
+plt.ylabel('sales')
+plt.show()
+
+x=data['Radio'].values.reshape(-1,1)
+y=data['Sales'].values.reshape(-1,1)
+
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.3)
+
+reg=LinearRegression()
+reg.fit(x_train,y_train)
+
+print("y={:.2}x+{:.2}".format(reg.coef_[0][0],reg.intercept_[0]))
+
+predictions=reg.predict(x_test)
+plt.scatter(x_test,y_test,c="black")
+plt.plot(x_test,predictions,linewidth=2,c="red")
+plt.show()
+
+mse=mean_squared_error(y_test,predictions)
+print(np.sqrt(mse))
+
+
+plt.scatter(data['Newspaper'],data['Sales'])
+plt.xlabel('Newspaper')
+plt.ylabel('sales')
+plt.show()
+
+x=data['Newspaper'].values.reshape(-1,1)
+y=data['Sales'].values.reshape(-1,1)
+
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.3)
+
+reg=LinearRegression()
+reg.fit(x_train,y_train)
+
+print("y={:.2}x+{:.2}".format(reg.coef_[0][0],reg.intercept_[0]))
+
+predictions=reg.predict(x_test)
+plt.scatter(x_test,y_test,c="black")
+plt.plot(x_test,predictions,linewidth=2,c="red")
+plt.show()
+
+mse=mean_squared_error(y_test,predictions)
+print(np.sqrt(mse))
+
